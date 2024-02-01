@@ -4,9 +4,10 @@ import 'package:news_app/screen/homepage.dart';
 
 
 Future<void> main() async{
-  await Hive.initFlutter();
-  Hive.openBox<Map>("favorites_news");
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.openBox<Map>("favorite_news");
+
   runApp(const MyApp());
 }
 

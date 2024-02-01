@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:news_app/screen/view_favorite.dart';
 import 'package:news_app/screen/view_newspaper.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
+
         length: 2,
         child:Scaffold(
           appBar: AppBar(
@@ -24,7 +27,7 @@ class _HomePageState extends State<HomePage> {
           ),
           body: TabBarView(children: [
             ViewNewspaper(),
-            Text("data")
+            ViewFavorite()
           ]),
         )
     );

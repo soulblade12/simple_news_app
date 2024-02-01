@@ -20,9 +20,15 @@ class _ViewNewspaperState extends State<ViewNewspaper> {
     futureNews = fetchNews();
   }
 
+  // @override
+  // void dispose() {
+  //   Hive.close();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
-    Hive.openBox<Map>('favorites');
+    Hive.openBox<Map>('favorite_news');
     return FutureBuilder(
         future: futureNews,
         builder: (context, snapshot) {
@@ -54,9 +60,18 @@ class _ViewNewspaperState extends State<ViewNewspaper> {
                             article.isFavorite ? Icons.favorite : Icons.favorite_border,
                             color: Colors.red,
                           ),
-                          onPressed: () {
+                          onPressed: () async{
+                            final box = await Hive.openBox<Map>('favorite_news');
                             setState(() {
                               article.isFavorite = !article.isFavorite;
+                              if (article.isFavorite) {
+                                box.add({"title":article.title,"url":article.url});
+                                print("successfully added");
+                              } else {
+                                box.delete(article.title);
+                                print("successfully deleted");
+                              }
+
                             });
                           },
                         ),
