@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb; // Import kIsWeb
 import 'package:hive/hive.dart';
+import 'package:news_app/screen/webview.dart';
 
 class ViewFavorite extends StatefulWidget {
   const ViewFavorite({Key? key}) : super(key: key);
@@ -23,14 +25,37 @@ class _ViewFavoriteState extends State<ViewFavorite> {
           margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: ListTile(
             title: Text(favoriteNews!['title']),
-            // Add any other details you want to display in the card
-
-            // Example of IconButton to go to the next page
             trailing: IconButton(
               icon: Icon(Icons.arrow_forward),
               onPressed: () {
-                // Navigate to the next page
-
+                if (kIsWeb) {
+                  // If running on the web, show an alert
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Unsupported Operation"),
+                        content: Text("WebView is not supported on Windows apps."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("OK"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  // If not running on the web, navigate to the WebView screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WebViewScreen(url: favoriteNews["url"]),
+                    ),
+                  );
+                }
               },
             ),
           ),
@@ -39,5 +64,3 @@ class _ViewFavoriteState extends State<ViewFavorite> {
     );
   }
 }
-
-
